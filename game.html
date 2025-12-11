@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Blomma Flower Catcher</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background-color: #FAF9F6; color: #5D6D55; }
+        #game-container { position: relative; width: 400px; height: 400px; background-color: white; border: 2px solid #D8B4A6; margin: 20px auto; overflow: hidden; }
+        #basket { position: absolute; bottom: 10px; width: 60px; height: 40px; background-color: #5D6D55; left: 170px; border-radius: 5px; }
+        .flower { position: absolute; font-size: 24px; top: 0; }
+        button { padding: 10px 20px; background-color: #D8B4A6; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        a { color: #5D6D55; text-decoration: none; margin-top: 20px; display: block; }
+    </style>
+</head>
+<body>
+    <h1>Flower Catcher (AI App)</h1>
+    <p>Use Left/Right Arrows to catch the blooms!</p>
+    <div id="score">Score: 0</div>
+    <div id="game-container">
+        <div id="basket"></div>
+    </div>
+    <button onclick="startGame()">Start Game</button>
+    <a href="scratch.html">Back to Project Page</a>
+
+    <script>
+        const container = document.getElementById('game-container');
+        const basket = document.getElementById('basket');
+        const scoreDisplay = document.getElementById('score');
+        let score = 0;
+        let basketLeft = 170;
+        let gameInterval;
+        let isPlaying = false;
+
+        function moveBasket(e) {
+            if (e.key === 'ArrowLeft' && basketLeft > 0) basketLeft -= 20;
+            if (e.key === 'ArrowRight' && basketLeft < 340) basketLeft += 20;
+            basket.style.left = basketLeft + 'px';
+        }
+
+        function createFlower() {
+            if (!isPlaying) return;
+            const flower = document.createElement('div');
+            flower.classList.add('flower');
+            flower.innerHTML = '🌸';
+            flower.style.left = Math.floor(Math.random() * 370) + 'px';
+            container.appendChild(flower);
+
+            let flowerTop = 0;
+            const fallInterval = setInterval(() => {
+                if (!isPlaying) { clearInterval(fallInterval); flower.remove(); return; }
+                flowerTop += 5;
+                flower.style.top = flowerTop + 'px';
+
+                if (flowerTop > 360 && flowerTop < 400) {
+                    const flowerLeft = parseInt(flower.style.left);
+                    if (flowerLeft > basketLeft - 20 && flowerLeft < basketLeft + 60) {
+                        score++;
+                        scoreDisplay.innerText = 'Score: ' + score;
+                        flower.remove();
+                        clearInterval(fallInterval);
+                    }
+                }
+                if (flowerTop > 400) {
+                    flower.remove();
+                    clearInterval(fallInterval);
+                }
+            }, 50);
+        }
+
+        function startGame() {
+            if (isPlaying) return;
+            isPlaying = true;
+            score = 0;
+            scoreDisplay.innerText = 'Score: 0';
+            document.addEventListener('keydown', moveBasket);
+            gameInterval = setInterval(createFlower, 1000);
+        }
+    </script>
+</body>
+</html>

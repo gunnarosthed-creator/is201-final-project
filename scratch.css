@@ -1,0 +1,8 @@
+/* Custom Stylesheet for Scratch Page */
+body { font-family: 'Verdana', sans-serif; background-color: #f0f8ff; color: #333; padding: 20px; }
+/* Requirement: Styles that specify font color and family */
+h1 { color: #00509d; text-align: center; }
+/* Requirement: Three divs for positioning and custom styles */
+.content-box { background: white; padding: 20px; margin: 20px auto; max-width: 800px; border: 2px solid #ddd; }
+.nav { margin-bottom: 20px; }
+.button { background: #00509d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
